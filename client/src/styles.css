@@ -1,0 +1,200 @@
+:root {
+  --bg: #14151a;
+  --panel: #1d1f26;
+  --panel-2: #262932;
+  --border: #33363f;
+  --text: #e7e8ec;
+  --muted: #9297a3;
+  --accent: #6d8cff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.presence-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-connected {
+  background: #1f3d2b;
+  color: #6de08a;
+}
+
+.status-connecting {
+  background: #3d3a1f;
+  color: #e0c96d;
+}
+
+.status-disconnected {
+  background: #3d1f1f;
+  color: #e06d6d;
+}
+
+.room-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.peers {
+  display: flex;
+  gap: 0.35rem;
+  margin-left: auto;
+}
+
+.peer-avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #14151a;
+  border: 2px solid var(--panel);
+}
+
+.board {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+}
+
+.column {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+}
+
+.column h2 {
+  font-size: 0.95rem;
+  margin: 0.25rem 0.25rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.count {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.card-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 40px;
+}
+
+.card {
+  background: var(--panel-2);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 0.6rem 0.7rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  cursor: grab;
+}
+
+.card p {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding-right: 1rem;
+}
+
+.card textarea {
+  width: 100%;
+  background: transparent;
+  color: var(--text);
+  border: none;
+  outline: none;
+  font: inherit;
+  resize: none;
+}
+
+.card-delete {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.card-delete:hover {
+  color: #e06d6d;
+}
+
+.drop-indicator {
+  height: 3px;
+  background: var(--accent);
+  border-radius: 3px;
+  margin: 2px 0 6px;
+}
+
+.add-card {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.add-card input {
+  flex: 1;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+  color: var(--text);
+}
+
+.add-card button {
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  color: #0c0d10;
+  font-weight: 600;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+}
