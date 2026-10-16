@@ -60,23 +60,30 @@ export class Room {
     this.conns.set(conn, new Set());
 
     conn.on('message', (data: Buffer) => {
-      const decoder = decoding.createDecoder(new Uint8Array(data));
-      const messageType = decoding.readVarUint(decoder);
-      switch (messageType) {
-        case MESSAGE_SYNC: {
-          const encoder = encoding.createEncoder();
-          encoding.writeVarUint(encoder, MESSAGE_SYNC);
-          syncProtocol.readSyncMessage(decoder, encoder, this.doc, conn);
-          if (encoding.length(encoder) > 1) send(conn, encoding.toUint8Array(encoder));
-          break;
+      try {
+        const decoder = decoding.createDecoder(new Uint8Array(data));
+        const messageType = decoding.readVarUint(decoder);
+        switch (messageType) {
+          case MESSAGE_SYNC: {
+            const encoder = encoding.createEncoder();
+            encoding.writeVarUint(encoder, MESSAGE_SYNC);
+            syncProtocol.readSyncMessage(decoder, encoder, this.doc, conn);
+            if (encoding.length(encoder) > 1) send(conn, encoding.toUint8Array(encoder));
+            break;
+          }
+          case MESSAGE_AWARENESS: {
+            const update = decoding.readVarUint8Array(decoder);
+            applyAwarenessUpdate(this.awareness, update, conn);
+            break;
+          }
+          default:
+            conn.close(1003, 'Unknown message type');
         }
-        case MESSAGE_AWARENESS: {
-          const update = decoding.readVarUint8Array(decoder);
-          applyAwarenessUpdate(this.awareness, update, conn);
-          break;
-        }
+      } catch {
+        conn.close(1003, 'Invalid collaboration message');
       }
     });
+    conn.on('error', () => conn.close());
 
     conn.on('close', () => {
       const ownedClientIds = this.conns.get(conn);
