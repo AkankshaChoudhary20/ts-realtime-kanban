@@ -73,6 +73,12 @@ export class KanbanProvider {
     ws.onopen = () => {
       this.reconnectAttempt = 0;
       this.setStatus('connected');
+      // Presence set while CONNECTING was not sent. Publish it on every open,
+      // including reconnects, instead of waiting for the awareness heartbeat.
+      const encoder = encoding.createEncoder();
+      encoding.writeVarUint(encoder, MESSAGE_AWARENESS);
+      encoding.writeVarUint8Array(encoder, encodeAwarenessUpdate(this.awareness, [this.doc.clientID]));
+      this.send(encoding.toUint8Array(encoder));
     };
 
     ws.onmessage = (event: MessageEvent) => {
