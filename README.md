@@ -59,3 +59,19 @@ npm run build --prefix client
 Serve `client/dist` as static files and run `node server/dist/server.js`
 (reads `PORT` and `KANBAN_DATA_DIR` env vars) behind a reverse proxy that
 supports WebSocket upgrades.
+
+## Persistence filenames
+
+Room names containing only ASCII letters, digits, underscores, and hyphens
+keep their existing `<room>.ydoc` filenames. Other names use
+`~<sha256-of-room-name>.ydoc` so names such as `a/b`, `a?b`, and `a_b` cannot
+overwrite one another. The SHA-256 input is the exact UTF-8 room name used
+by the sync server.
+
+If upgrading an existing server that used punctuation in room names, stop
+the server and back up `KANBAN_DATA_DIR` first. Identify the board in each
+old file (previously every non-ASCII-letter/digit/underscore/hyphen was
+replaced with `_`) and copy it to the new hashed filename for its intended
+room. Migration is manual because an old colliding filename cannot identify
+which room its contents belong to. Existing simple room names need no
+migration.

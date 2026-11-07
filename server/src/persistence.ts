@@ -1,5 +1,6 @@
 import { mkdirSync, existsSync, readFileSync, writeFileSync, renameSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import * as Y from 'yjs';
 
 const DATA_DIR = process.env.KANBAN_DATA_DIR ?? join(process.cwd(), 'data');
@@ -9,7 +10,11 @@ if (!existsSync(DATA_DIR)) {
 }
 
 function roomFile(room: string): string {
-  const safe = room.replace(/[^a-zA-Z0-9_-]/g, '_');
+  // Keep existing simple-room filenames; encode other names without collisions.
+  // The ~ prefix cannot occur in the simple-name branch.
+  const safe = /^[a-zA-Z0-9_-]+$/.test(room)
+    ? room
+    : `~${createHash('sha256').update(room).digest('hex')}`;
   return join(DATA_DIR, `${safe}.ydoc`);
 }
 
