@@ -49,6 +49,11 @@ To point the client at a different server, set `VITE_SYNC_URL` (e.g. in a
 VITE_SYNC_URL=wss://your-server-host
 ```
 
+To verify collaboration, open `http://localhost:5173/?room=smoke-test`
+in two tabs. Add a card in one tab and confirm it appears in the other.
+If the tabs are out of sync, verify both use the same room and check the
+sync server with `curl -fsS http://localhost:1234/healthz`.
+
 ## Building for production
 
 ```bash
